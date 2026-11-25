@@ -1,0 +1,45 @@
+﻿AIKO 2.9.0 BETA - NOTES FOR TESTERS
+=====================================
+
+Thanks for testing! AIKO (A.I. Kept Offline) is an anime desktop companion that runs her AI entirely on your PC.
+
+INSTALLING
+- Run AIKO-Setup-2.9.0-beta.exe. It installs for your Windows user only (no admin needed).
+- Windows may say "Windows protected your PC": click "More info", then "Run anyway".
+  (The beta isn't code-signed yet.)
+- If Windows says Smart App Control blocked it, the beta can't run on that PC yet. Please tell us.
+- Setup installs what's missing (Microsoft WebView2, Ollama), then downloads her AI model
+  (1.9 GB for 2B, 3.3 GB for 4B). A console window shows the download progress.
+
+USING HER
+- She sits at the bottom-right of your screen. Hover over her to see her buttons:
+    ◎  react to what's on your screen        📓 screen journal (off by default)
+    👁  look at all your screens now          💬 read the whole chat
+    ✦  what she remembers about you          📚 open her second-brain folder
+    2B/4B  switch her AI model               🔊 voice on/off
+    ✕  close
+- Type in the box in front of her and press Enter. Her reply shows two lines at a time;
+  scroll it, or open 💬 to read everything.
+- Try: "what's the weather in <your city>?", "search for <anything>", "note this down: <a note>".
+- Show her a picture: press Ctrl+V in her box, or drag pictures onto her, then press Enter.
+- Ask her to "research" something or paste a link: what she reads on trusted sites is kept in
+  Documents\AIKO Brain\Learned from the web, so she remembers it next time.
+- Playing a game with ◎ on? She glances every 15 seconds and reacts: sad when you die,
+  happy when you win. Each glance briefly uses your graphics card, so turn ◎ off if a game stutters.
+
+PRIVACY
+- Your chats, memories and notes stay on your PC.
+- Only web search (DuckDuckGo) and weather (Open-Meteo) go online, and only when a question needs them.
+- Your data lives in %APPDATA%\local.companion and Documents\AIKO Brain.
+
+NO GRAPHICS CARD?
+- She still works on the CPU with the 2B model, just slower (screen looks can take 10-30 seconds).
+
+PLEASE TELL US
+- Your PC (graphics card, RAM, Windows version) and which model you picked.
+- Anything that broke, felt slow, or that she said that felt off.
+- Screenshots help a lot.
+
+UNINSTALLING
+- Settings > Apps > Installed apps > AIKO > Uninstall.
+  Ollama, her models and your data stay; remove Ollama separately if you want.

@@ -1,0 +1,8 @@
+src-tauri/target/
+src-tauri/gen/
+ui/vendor/
+
+# built on a dev machine: they carry local paths; installers come from the CI builds
+release/*.exe
+release/*.dmg
+tester/

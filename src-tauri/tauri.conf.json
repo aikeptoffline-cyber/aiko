@@ -1,0 +1,36 @@
+{
+  "productName": "AIKO",
+  "version": "2.9.0",
+  "identifier": "local.companion",
+  "build": { "frontendDist": "../ui" },
+  "app": {
+    "withGlobalTauri": true,
+    "macOSPrivateApi": true,
+    "windows": [
+      {
+        "label": "main",
+        "title": "AIKO",
+        "width": 320,
+        "height": 430,
+        "transparent": true,
+        "decorations": false,
+        "alwaysOnTop": true,
+        "shadow": false,
+        "dragDropEnabled": false
+      }
+    ],
+    "security": { "csp": null }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"],
+    "category": "Utility",
+    "shortDescription": "AIKO: an anime desktop companion whose AI runs entirely on your computer",
+    "longDescription": "AIKO (A.I. Kept Offline) is an anime desktop companion. She chats with a local AI through Ollama, remembers you, reads your notes, can look at your screen, and speaks with an offline voice. Nothing you say leaves your computer.",
+    "license": "GPL-3.0-or-later",
+    "copyright": "AIKO contributors",
+    "macOS": { "minimumSystemVersion": "11.0" },
+    "linux": { "deb": { "section": "utils" } }
+  }
+}

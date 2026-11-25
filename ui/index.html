@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="style.css">
+<script type="importmap">
+{ "imports": {
+  "three": "./vendor/three/build/three.module.js",
+  "three/addons/": "./vendor/three/examples/jsm/",
+  "@pixiv/three-vrm": "./vendor/three-vrm.module.min.js"
+} }
+</script>
+</head>
+<body>
+  <div id="avatar" data-tauri-drag-region></div>
+  <div id="bar" data-tauri-drag-region>
+    <span id="name" data-tauri-drag-region>...</span>
+    <span id="status" data-tauri-drag-region></span>
+  </div>
+  <!-- her buttons: a vertical strip down the right edge, shown on hover -->
+  <div id="tools">
+    <button id="watch" title="React to what's on my screen" aria-label="React to my screen">◎</button>
+    <button id="journal" title="Screen journal: note what you're doing in the second brain (off by default)" aria-label="Toggle screen journal">📓</button>
+    <button id="look"title="Look at my screen" aria-label="Look at my screen">👁</button>
+    <button id="chat" title="Read the chat" aria-label="Chat history">💬</button>
+    <button id="mem"title="What you remember" aria-label="Memories">✦</button>
+    <button id="brain" title="Open your second brain folder" aria-label="Open second brain folder">📚</button>
+    <button id="model" aria-label="Switch AI model">2B</button>
+    <button id="voice"aria-label="Toggle voice">🔊</button>
+    <button id="more" title="More: incognito, forgetting, quit" aria-label="More options" aria-expanded="false">☰</button>
+  </div>
+  <!-- the collapsible ☰ menu -->
+  <div id="menu" hidden>
+    <button id="incognito" title="Chat without her keeping anything: no history, memories, web notes or journal">🕶 Incognito: off</button>
+    <div class="label">Forget memories and chat older than</div>
+    <div id="forget" role="radiogroup" aria-label="Forget after">
+      <button data-v="never">Never</button><button data-v="day">Day</button><button data-v="week">Week</button><button data-v="month">Month</button><button data-v="year">Year</button>
+    </div>
+    <button id="quit" title="Close AIKO">⏻ Quit</button>
+  </div>
+  <div id="memories" hidden><ul></ul><button id="memclose">Close</button></div>
+  <div id="history" hidden><div class="log"></div><button id="histclose">Close</button></div>
+  <!-- the chat box in front of her: her replies above your message box, at most half her height -->
+  <div id="side">
+  <div id="bubble" hidden></div>
+  <form id="ask">
+    <span id="shots"></span>
+    <input id="text" placeholder="Talk to me…" autocomplete="off">
+    <label title="Attach a screenshot"><input type="checkbox" id="screen"> screen</label>
+  </form>
+  </div>
+  <script type="module" src="main.js"></script>
+</body>
+</html>
