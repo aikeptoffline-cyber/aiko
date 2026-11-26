@@ -99,8 +99,8 @@ else
   DATA="${XDG_DATA_HOME:-$HOME/.local/share}/local.companion"
   case "$(ask 'Add a desktop shortcut? [y/N]:' n)" in
     y|Y|yes) desk="$(xdg-user-dir DESKTOP 2>/dev/null || echo "$HOME/Desktop")"; mkdir -p "$desk"
-             for f in /usr/share/applications/aiko.desktop "$HOME/.local/share/applications/aiko.desktop"; do
-               [ -f "$f" ] && { cp "$f" "$desk/"; chmod +x "$desk/aiko.desktop"; break; }; done ;;
+             for f in /usr/share/applications/AIKO.desktop /usr/share/applications/aiko.desktop "$HOME/.local/share/applications/aiko.desktop"; do
+               [ -f "$f" ] && { cp "$f" "$desk/aiko.desktop"; chmod +x "$desk/aiko.desktop"; break; }; done ;;
   esac
 fi
 rm -rf "$tmp"
