@@ -16,9 +16,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { os: macos-latest, target: aarch64-apple-darwin, bundles: "app,dmg", name: macos-apple-silicon }
-          - { os: macos-latest, target: x86_64-apple-darwin, bundles: "app,dmg", name: macos-intel }
-          - { os: ubuntu-24.04, target: x86_64-unknown-linux-gnu, bundles: "deb,rpm,appimage", name: linux-x64 }
+          # one Mac job builds both architectures: GitHub's Mac runners are scarce, and a second Mac job
+          # can sit in the queue until it's cancelled
+          - { os: macos-latest, targets: "aarch64-apple-darwin x86_64-apple-darwin", bundles: "app,dmg", name: macos }
+          - { os: ubuntu-24.04, targets: x86_64-unknown-linux-gnu, bundles: "deb,rpm,appimage", name: linux-x64 }
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -33,7 +34,7 @@ jobs:
 
       - uses: dtolnay/rust-toolchain@stable
         with:
-          targets: ${{ matrix.target }}
+          targets: aarch64-apple-darwin,x86_64-apple-darwin,x86_64-unknown-linux-gnu
 
       - uses: actions/setup-node@v4
         with:
@@ -44,14 +45,19 @@ jobs:
         run: ./scripts/vendor.sh
 
       - name: Build and bundle
-        run: npx --yes @tauri-apps/cli@2 build --target ${{ matrix.target }} --bundles ${{ matrix.bundles }}
+        shell: bash
+        run: |
+          for t in ${{ matrix.targets }}; do
+            npx --yes @tauri-apps/cli@2 build --target "$t" --bundles ${{ matrix.bundles }}
+          done
 
       - name: Collect installers
         shell: bash
         run: |
           mkdir -p out
-          B=src-tauri/target/${{ matrix.target }}/release/bundle
-          find "$B" -maxdepth 2 \( -name '*.dmg' -o -name '*.deb' -o -name '*.rpm' -o -name '*.AppImage' \) -exec cp {} out/ \;
+          for t in ${{ matrix.targets }}; do
+            find "src-tauri/target/$t/release/bundle" -maxdepth 2 \( -name '*.dmg' -o -name '*.deb' -o -name '*.rpm' -o -name '*.AppImage' \) -exec cp {} out/ \;
+          done
           ls -lh out
 
       - uses: actions/upload-artifact@v4
