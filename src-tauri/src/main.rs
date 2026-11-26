@@ -701,6 +701,16 @@ async fn react(
     }
     let reply = j["reaction"].as_str().unwrap_or("").trim().to_string();
     let reaction = (chime && !reply.is_empty() && !reply.contains("PASS")).then_some(reply);
+    // what she says on her own goes into the chat too, so 💬 shows it and she can refer back to it
+    // (into the incognito chat while that's on, which is never saved)
+    if let Some(r) = &reaction {
+        let mut s = state.store.lock().unwrap();
+        let said = Msg { role: "assistant".into(), content: r.clone(), t: now() };
+        match s.incognito.as_mut() {
+            Some(chat) => chat.push(said),
+            None => { s.history.push(said); state.save(&s)?; }
+        }
+    }
     Ok(json!({ "reaction": reaction, "game": j["game"] == true }))
 }
 
