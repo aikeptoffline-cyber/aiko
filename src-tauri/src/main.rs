@@ -856,7 +856,31 @@ fn open_brain(state: State<Companion>) -> Result<(), String> {
     std::process::Command::new(opener).arg(&state.brain.dir).spawn().map(|_| ()).map_err(err)
 }
 
+/// `aiko --say-lines <lines.txt> <out-dir>`: speaks each line of the file into <out-dir>/001.wav, 002.wav...
+/// in her voice, then exits (used to narrate videos). The voice must already be downloaded.
+fn say_lines(input: &str, out: &str) -> Result<(), String> {
+    let data = std::env::var("APPDATA").map(|d| PathBuf::from(d).join("local.companion"))
+        .or_else(|_| std::env::var("HOME").map(|h| PathBuf::from(h).join(if cfg!(target_os = "macos") {
+            "Library/Application Support/local.companion" } else { ".local/share/local.companion" })))
+        .map_err(err)?;
+    let speech = speech::Speech::new(&data);
+    fs::create_dir_all(out).map_err(err)?;
+    for (i, line) in fs::read_to_string(input).map_err(err)?.lines().enumerate() {
+        let wav = base64::engine::general_purpose::STANDARD.decode(speech.say(line.trim())?).map_err(err)?;
+        fs::write(Path::new(out).join(format!("{:03}.wav", i + 1)), wav).map_err(err)?;
+    }
+    Ok(())
+}
+
 fn main() {
+    let args: Vec<String> = std::env::args().collect();
+    if args.len() == 4 && args[1] == "--say-lines" {
+        if let Err(e) = say_lines(&args[2], &args[3]) {
+            fs::write(Path::new(&args[3]).join("error.txt"), e).ok();
+            std::process::exit(1);
+        }
+        return;
+    }
     tauri::Builder::default()
         .setup(|app| {
             let dir = app.path().app_data_dir()?;
